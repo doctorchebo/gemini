@@ -1,7 +1,10 @@
+import { Movie } from "./movie.model";
+
 export type MovieRequestData = {
   quantity: number;
   genre: string;
-  year: string;
+  minYear: string;
+  maxYear: string;
   characteristic: string;
 };
 
@@ -22,7 +25,7 @@ export type MovieRequest = {
 };
 
 // TypeScript type for the response
-export type MovieResponse = {
+export type MovieCompleteResponse = {
   candidates: [
     {
       content: {
@@ -48,3 +51,7 @@ export type MovieResponse = {
   };
   modelVersion: string; // Version of the model used for generation
 };
+
+export interface MovieResponse {
+  recommendations: Movie[];
+}

@@ -3,14 +3,16 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as MovieListActions from '../movie-list/store/movie-list.actions';
 import * as fromApp from '../store/app.reducer';
+
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  selector: 'app-search-form',
+  templateUrl: './search-form.component.html',
+  styleUrl: './search-form.component.css',
 })
-export class HomeComponent implements OnInit {
+export class SearchFormComponent implements OnInit {
   constructor(public store: Store<fromApp.AppState>) {}
   movieForm!: FormGroup;
+  loading = false;
   ngOnInit() {
     this.movieForm = new FormGroup({
       quantity: new FormControl(3),
@@ -18,6 +20,10 @@ export class HomeComponent implements OnInit {
       minYear: new FormControl(2010),
       maxYear: new FormControl(new Date().getFullYear()),
       characteristic: new FormControl('It has a plot twist'),
+    });
+
+    this.store.select('movies').subscribe((moviesState) => {
+      this.loading = moviesState.loading;
     });
   }
   genres: string[] = [
