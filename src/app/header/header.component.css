@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.mat-slide-toggle {
+    transform: scale(1.5)
+}

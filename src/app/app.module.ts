@@ -31,8 +31,11 @@ import {MatCardModule} from '@angular/material/card';
 import { appReducer } from './store/app.reducer';
 import { SearchFormComponent } from './search-form/search-form.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
 import {MatChipsModule} from '@angular/material/chips';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatIconModule} from '@angular/material/icon';
+
+
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import {MatChipsModule} from '@angular/material/chips';
     MatGridListModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSlideToggleModule,
+    MatIconModule
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
