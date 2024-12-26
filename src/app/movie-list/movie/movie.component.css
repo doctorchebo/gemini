@@ -6,3 +6,7 @@ p {
   display: flex;
   flex-direction: row;
 }
+
+.container {
+  margin: 1rem;
+}
