@@ -1,11 +1,18 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label>Quantity</label>
-    <mat-slider [min]="minQty" [max]="maxQty" step="1">
-      <input matSliderThumb formControlName="quantity" #quantitySlider />
+  <mat-form-field>
+    <mat-label
+      >Quantity:
+      <span>{{ quantitySlider.value }}</span>
+    </mat-label>
+    <mat-slider [min]="minQty" [max]="maxQty" step="1" discrete>
+      <input
+        matInput
+        matSliderThumb
+        formControlName="quantity"
+        #quantitySlider
+      />
     </mat-slider>
-    {{ quantitySlider.value }}
-  </div>
+  </mat-form-field>
 
   <mat-form-field>
     <mat-label>Genres</mat-label>
@@ -16,14 +23,28 @@
     </mat-select>
   </mat-form-field>
 
-  <div>
-    <label>Year</label>
+  <mat-form-field>
+    <mat-label
+      >Year:
+      <span
+        >{{ minYearSlider.value }} to {{ maxYearSlider.value }}</span
+      ></mat-label
+    >
     <mat-slider [min]="minYear" [max]="maxYear" step="1">
-      <input matSliderStartThumb formControlName="minYear" #minYearSlider />
-      <input matSliderEndThumb formControlName="maxYear" #maxYearSlider />
+      <input
+        matInput
+        matSliderStartThumb
+        formControlName="minYear"
+        #minYearSlider
+      />
+      <input
+        matInput
+        matSliderEndThumb
+        formControlName="maxYear"
+        #maxYearSlider
+      />
     </mat-slider>
-    {{ minYearSlider.value }} to {{ maxYearSlider.value }}
-  </div>
+  </mat-form-field>
 
   <mat-form-field>
     <mat-label>Characteristic</mat-label>

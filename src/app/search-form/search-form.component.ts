@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as MovieListActions from '../movie-list/store/movie-list.actions';
 import * as fromApp from '../store/app.reducer';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
-  styleUrl: './search-form.component.css',
+  styleUrl: './search-form.component.scss',
 })
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent implements OnInit, OnDestroy {
   constructor(public store: Store<fromApp.AppState>) {}
   movieForm!: FormGroup;
   loading = false;
+  moviesSub!: Subscription;
   ngOnInit() {
     this.movieForm = new FormGroup({
       quantity: new FormControl(3),
@@ -22,7 +24,7 @@ export class SearchFormComponent implements OnInit {
       characteristic: new FormControl('It has a plot twist'),
     });
 
-    this.store.select('movies').subscribe((moviesState) => {
+    this.moviesSub = this.store.select('movies').subscribe((moviesState) => {
       this.loading = moviesState.loading;
     });
   }
@@ -59,5 +61,11 @@ export class SearchFormComponent implements OnInit {
   onSubmit() {
     console.log(this.movieForm.value);
     this.store.dispatch(new MovieListActions.FetchMovies(this.movieForm.value));
+  }
+
+  ngOnDestroy() {
+      if(this.moviesSub){
+        this.moviesSub.unsubscribe();
+      }
   }
 }

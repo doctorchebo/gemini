@@ -35,8 +35,6 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatIconModule} from '@angular/material/icon';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

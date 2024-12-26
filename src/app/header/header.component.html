@@ -1,8 +1,12 @@
-<mat-toolbar class="container">
+<mat-toolbar
+  class="container"
+>
   <span>Movie Recommender</span>
-    <mat-slide-toggle
-      [checked]="isDarkMode"
-      (click)="onToggleDarkMode()"
-    ><mat-icon aria-hidden="false" aria-label="Dark Mode Icon" fontIcon="dark_mode"></mat-icon></mat-slide-toggle>
-    
+  <mat-slide-toggle [checked]="isDarkMode" (click)="onToggleDarkMode()"
+    ><mat-icon
+      aria-hidden="false"
+      aria-label="Dark Mode Icon"
+      fontIcon="dark_mode"
+    ></mat-icon
+  ></mat-slide-toggle>
 </mat-toolbar>

@@ -4,7 +4,7 @@ import { Movie } from '../movie.model';
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
-  styleUrl: './movie.component.css'
+  styleUrl: './movie.component.scss'
 })
 export class MovieComponent {
   @Input() movie!: Movie;

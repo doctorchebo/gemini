@@ -3,62 +3,89 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import * as fromApp from '../store/app.reducer';
 import { Movie } from './movie.model';
+import * as MovieListActions from "./store/movie-list.actions"
 @Component({
   selector: 'app-movie-list',
   templateUrl: './movie-list.component.html',
-  styleUrl: './movie-list.component.css',
+  styleUrl: './movie-list.component.scss',
 })
 export class MovieListComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromApp.AppState>) {}
   moviesSub!: Subscription;
   movies: Movie[] = [
-    // {
-    //   name: 'When Harry Met Sally...',
-    //   genre: 'Romance',
-    //   year: 1989,
-    //   director: 'Rob Reiner',
-    //   cast: ['Billy Crystal', 'Meg Ryan', 'Carrie Fisher'],
-    //   synopsis:
-    //     'A classic tale of friendship and love that explores the complex dynamics of relationships between men and women, culminating in a heartwarming and hilarious journey of self-discovery. This charming movie about two lifelong friends exploring the intricacies of love is absolutely delightful, a must-watch for anyone who enjoys quirky and romantic comedies. Get ready for witty banter, endearing moments, and a captivating exploration of the human heart.',
-    //   rating: 4.2,
-    // },
-    // {
-    //   name: "You've Got Mail",
-    //   genre: 'Romance',
-    //   year: 1998,
-    //   director: 'Nora Ephron',
-    //   cast: ['Tom Hanks', 'Meg Ryan', 'Greg Kinnear'],
-    //   synopsis:
-    //     'Prepare for a whirlwind romance between two strangers who connect via online interactions, leading to an unexpected and touching journey of love and friendship. An incredibly charming and amusing movie! Experience the hilarious misunderstandings, the sweet moments of connection, and a truly heartwarming story of love in the digital age.',
-    //   rating: 3.9,
-    // },
-    // {
-    //   name: 'Sleepless in Seattle',
-    //   genre: 'Romance',
-    //   year: 1993,
-    //   director: 'Nora Ephron',
-    //   cast: ['Tom Hanks', 'Meg Ryan', 'Ross Malinger'],
-    //   synopsis:
-    //     "Experience a captivating love story, where a widower's heartfelt search for a companion resonates across the country, leading to an unexpected meeting and a blossoming romance. You will be completely charmed by this movie's touching message and captivating narrative. Enjoy a rollercoaster of emotions as you follow the heartwarming tale of a love that spans distances and transcends time.",
-    //   rating: 4.0,
-    // },
-    // {
-    //   name: 'Notting Hill',
-    //   genre: 'Romance',
-    //   year: 1999,
-    //   director: 'Roger Michell',
-    //   cast: ['Hugh Grant', 'Julia Roberts', 'Rhys Ifans'],
-    //   synopsis:
-    //     'Dive into a heartwarming tale of a bookstore owner in London who finds himself unexpectedly swept up in a whirlwind romance with a renowned Hollywood actress. Experience the infectious energy, witty banter, and beautiful chemistry between the lead characters. This movie is a must-watch for anyone who appreciates genuine romance and heartwarming stories of finding love in the most unexpected places. Get ready to be captivated by this movie!',
-    //   rating: 3.8,
-    // },
+    {
+      "name": "Saving Private Ryan",
+      "genre": "War",
+      "year": 1998,
+      "director": "Steven Spielberg",
+      "cast": [
+        "Tom Hanks",
+        "Matt Damon",
+        "Tom Sizemore",
+        "Edward Burns"
+      ],
+      "synopsis": "A harrowing and unforgettable depiction of the horrors of war, *Saving Private Ryan* plunges you into the heart of the D-Day invasion, as a team of American soldiers undertakes a perilous mission to rescue a paratrooper's younger brother.  Witness the brutal realities of combat, from the sheer terror of the initial assault to the agonizing aftermath, in a masterpiece of cinematic storytelling. Prepare to be emotionally gripped by this epic and unflinching portrayal of war's devastating cost.",
+      "rating": 4.5
+    },
+    {
+      "name": "Dunkirk",
+      "genre": "War",
+      "year": 2017,
+      "director": "Christopher Nolan",
+      "cast": [
+        "Fionn Whitehead",
+        "Tom Hardy",
+        "Kenneth Branagh"
+      ],
+      "synopsis": "Experience the sheer nerve-wracking desperation of the Dunkirk evacuation! Witness the harrowing struggle of Allied soldiers trapped on the beaches of France as they face the relentless enemy forces. A stunning cinematic experience that captures the sheer scale of the evacuation in a truly breathtaking way.  Watch as hope and heroism intertwine in this powerfully moving and visually captivating film.",
+      "rating": 4.2
+    },
+    {
+      "name": "The Pianist",
+      "genre": "War",
+      "year": 2002,
+      "director": "Roman Polanski",
+      "cast": [
+        "Adrien Brody",
+        "Thomas Kretschmann",
+        "Frank Finlay"
+      ],
+      "synopsis": "Dive into the harrowing struggle of a Polish Jewish man as he navigates the treacherous landscape of the Warsaw Ghetto during World War II.  Witness his unwavering courage in the face of unimaginable suffering and the profound human spirit that never gives up. This unforgettable film will stay with you long after the credits roll.",
+      "rating": 4.1
+    },
+    {
+      "name": "Band of Brothers",
+      "genre": "War",
+      "year": 2001,
+      "director": "various",
+      "cast": [
+        "Damian Lewis",
+        "Scott Grimes",
+        "Ron Livingston"
+      ],
+      "synopsis": "Experience the incredible bravery, profound losses and powerful bond between a group of United States Army paratroopers as they participate in various crucial WWII engagements. *Band of Brothers* is a meticulously researched historical drama that masterfully intertwines the personal stories of these brave men. Witness the immense sacrifices they made, the battles they endured, and the unbreakable camaraderie that developed amongst them.  An absolutely essential watch for any fan of war films or WWII history!",
+      "rating": 4.4
+    },
+    {
+      "name": "Schindler's List",
+      "genre": "War",
+      "year": 1993,
+      "director": "Steven Spielberg",
+      "cast": [
+        "Liam Neeson",
+        "Ralph Fiennes",
+        "Ben Kingsley"
+      ],
+      "synopsis": "A gripping and unforgettable story of Oskar Schindler, a German industrialist, and his unexpected role in saving the lives of approximately 1,200 Polish-Jewish refugees during the Holocaust. This powerful film captures the atrocities and immense courage during one of the most harrowing periods in human history. You will be moved and shaken to your core by this incredibly moving masterpiece.",
+      "rating": 4.6
+    }
   ];
 
   loading = false;
   ngOnInit() {
     this.moviesSub = this.store.select('movies').subscribe((moviesState) => {
       console.log(moviesState);
-      this.movies = moviesState.movies;
+      // this.movies = moviesState.movies;
       this.loading = moviesState.loading;
     });
   }
