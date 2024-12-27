@@ -1,8 +1,7 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-label
-      >Quantity:
-      <span>{{ quantitySlider.value }}</span>
+      >Quantity
     </mat-label>
     <mat-slider [min]="minQty" [max]="maxQty" step="1" discrete>
       <input
@@ -12,6 +11,7 @@
         #quantitySlider
       />
     </mat-slider>
+    <p>{{ quantitySlider.value }}</p>
   </mat-form-field>
 
   <mat-form-field>
@@ -25,10 +25,8 @@
 
   <mat-form-field>
     <mat-label
-      >Year:
-      <span
-        >{{ minYearSlider.value }} to {{ maxYearSlider.value }}</span
-      ></mat-label
+      >Year
+     </mat-label
     >
     <mat-slider [min]="minYear" [max]="maxYear" step="1">
       <input
@@ -44,6 +42,9 @@
         #maxYearSlider
       />
     </mat-slider>
+    <p
+    >{{ minYearSlider.value }} to {{ maxYearSlider.value }}</p
+  >
   </mat-form-field>
 
   <mat-form-field>

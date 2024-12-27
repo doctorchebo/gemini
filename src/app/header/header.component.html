@@ -1,8 +1,8 @@
-<mat-toolbar
-  class="container"
->
+<mat-toolbar class="container">
   <span>Movie Recommender</span>
-  <mat-slide-toggle [checked]="isDarkMode" (click)="onToggleDarkMode()"
+  <mat-slide-toggle
+    [checked]="themeService.currentTheme() === 'dark' ? true : false"
+    (click)="onToggleDarkMode()"
     ><mat-icon
       aria-hidden="false"
       aria-label="Dark Mode Icon"

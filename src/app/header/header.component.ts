@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import * as HomeActions from '../home/store/home.actions';
 import * as fromApp from '../store/app.reducer';
+import { ThemeService } from '../services/theme.service';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
@@ -10,6 +11,7 @@ import * as fromApp from '../store/app.reducer';
     standalone: false
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  readonly themeService = inject(ThemeService)
   constructor(private store: Store<fromApp.AppState>) {}
   homeSub!: Subscription;
   isDarkMode = false;
@@ -19,12 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
   onToggleDarkMode() {
-    this.store.dispatch(new HomeActions.SetDarkMode(!this.isDarkMode));
-    if (document.body.classList.contains('dark-mode')) {
-      document.body.classList.remove('dark-mode');
-    } else {
-      document.body.classList.add('dark-mode');
-    }
+    this.themeService.toggleTheme();
   }
 
   ngOnDestroy() {

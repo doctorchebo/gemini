@@ -2,10 +2,15 @@ form {
   display: flex;
   flex-direction: column;
 }
-label {
-  font-family: "Roboto";
-}
 
 p {
   text-align: center;
+}
+
+.slider {
+  text-align: center;
+}
+
+mat-slider {
+  display: flex;
 }
