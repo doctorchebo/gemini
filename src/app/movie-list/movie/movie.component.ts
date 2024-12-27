@@ -8,5 +8,5 @@ import { Movie } from '../movie.model';
     standalone: false
 })
 export class MovieComponent {
-  @Input() movie!: Movie;
+  @Input() movie: Movie | undefined;
 }

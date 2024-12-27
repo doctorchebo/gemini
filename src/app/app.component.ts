@@ -14,12 +14,12 @@ export class AppComponent implements OnInit, OnDestroy {
   rows = 6;
   ngOnInit() {
     this.movieSub = this.store.select('movies').subscribe((movieState) => {
-      // this.rows =
-      //   movieState.movies.length == 0
-      //     ? this.rows
-      //     : movieState.movies.length * 5 + 1;
+      this.rows =
+        movieState.movies.length == 0
+          ? this.rows
+          : movieState.movies.length * 5 + 1;
 
-      this.rows = 5 * 4 + 1;
+      // this.rows = 5 * 4 + 1;
     });
   }
 
