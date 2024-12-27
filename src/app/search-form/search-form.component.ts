@@ -6,9 +6,10 @@ import * as fromApp from '../store/app.reducer';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-search-form',
-  templateUrl: './search-form.component.html',
-  styleUrl: './search-form.component.scss',
+    selector: 'app-search-form',
+    templateUrl: './search-form.component.html',
+    styleUrl: './search-form.component.scss',
+    standalone: false
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
   constructor(public store: Store<fromApp.AppState>) {}

@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs';
 import * as HomeActions from '../home/store/home.actions';
 import * as fromApp from '../store/app.reducer';
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss',
+    standalone: false
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromApp.AppState>) {}

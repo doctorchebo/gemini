@@ -5,9 +5,10 @@ import * as fromApp from '../store/app.reducer';
 import { Movie } from './movie.model';
 import * as MovieListActions from "./store/movie-list.actions"
 @Component({
-  selector: 'app-movie-list',
-  templateUrl: './movie-list.component.html',
-  styleUrl: './movie-list.component.scss',
+    selector: 'app-movie-list',
+    templateUrl: './movie-list.component.html',
+    styleUrl: './movie-list.component.scss',
+    standalone: false
 })
 export class MovieListComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromApp.AppState>) {}

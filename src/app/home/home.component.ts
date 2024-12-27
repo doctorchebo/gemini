@@ -4,9 +4,10 @@ import { Store } from '@ngrx/store';
 import * as MovieListActions from '../movie-list/store/movie-list.actions';
 import * as fromApp from '../store/app.reducer';
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
+    standalone: false
 })
 export class HomeComponent implements OnInit {
   constructor(public store: Store<fromApp.AppState>) {}
