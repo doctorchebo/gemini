@@ -1,20 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { of } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { cold, hot } from 'jasmine-marbles';
+import { Observable, of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { MovieListEffects } from './movie-list.effects';
-import { MovieRequestData } from './movie-requests.type';
-import {
-  FetchFailed,
-  FetchMovies,
-  SetMovies,
-} from './store/movie-list.actions';
+import { MovieCompleteResponse, MovieRequestData } from './movie-requests.type';
+
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Action } from '@ngrx/store';
+import * as MovieListActions from './store/movie-list.actions'
 describe('MovieListEffects', () => {
-  let store: MockStore;
+  let actions$ = new Observable<Action>();
+  let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let effects: MovieListEffects;
   const initialState = { loading: false, movies: [], error: null };
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
   const movieRequest: MovieRequestData = {
     characteristic: 'has a plot twist',
     genre: 'horror',
@@ -27,58 +26,110 @@ describe('MovieListEffects', () => {
     TestBed.configureTestingModule({
       imports: [AppModule],
       providers: [
-        provideMockStore({ initialState }),
+        provideMockActions(() => actions$),
         { provide: HttpClient, useValue: httpClientSpy },
       ],
     });
-    store = TestBed.inject(MockStore);
     effects = TestBed.inject(MovieListEffects);
   });
 
   it('should load movies on success', () => {
-    const movies = [
-      {
-        name: 'Dunkirk',
-        genre: 'War',
-        year: 2017,
-        director: 'Christopher Nolan',
-        cast: ['Fionn Whitehead', 'Tom Hardy', 'Kenneth Branagh'],
-        synopsis:
-          'Experience the sheer nerve-wracking desperation of the Dunkirk evacuation! Witness the harrowing struggle of Allied soldiers trapped on the beaches of France as they face the relentless enemy forces. A stunning cinematic experience that captures the sheer scale of the evacuation in a truly breathtaking way.  Watch as hope and heroism intertwine in this powerfully moving and visually captivating film.',
-        rating: 4.2,
-      },
-      {
-        name: 'The Pianist',
-        genre: 'War',
-        year: 2002,
-        director: 'Roman Polanski',
-        cast: ['Adrien Brody', 'Thomas Kretschmann', 'Frank Finlay'],
-        synopsis:
-          'Dive into the harrowing struggle of a Polish Jewish man as he navigates the treacherous landscape of the Warsaw Ghetto during World War II.  Witness his unwavering courage in the face of unimaginable suffering and the profound human spirit that never gives up. This unforgettable film will stay with you long after the credits roll.',
-        rating: 4.1,
-      },
-    ];
-    const action = new FetchMovies(movieRequest);
-    const outcome = new SetMovies(movies);
+    const action = new MovieListActions.FetchMovies(movieRequest);
+    const outcome = new MovieListActions.SetMovies(movies);
 
-    httpClientSpy.post.and.returnValue(of(outcome));
+    actions$ = hot('-a', { a: action });
 
-    store.dispatch(action);
+    httpClientSpy.post.and.returnValue(cold('-b', { b: movieResponse }));
 
-    effects.fetchMovies.subscribe((resultAction) => {
-      expect(resultAction).toEqual(outcome);
-    });
+    const expected = cold('--b', { b: outcome });
+
+    expect(effects.fetchMovies).toBeObservable(expected);
   });
 
-  it('should dispatch FetchFailed action if API called fails', () => {
-    const action = new FetchMovies(movieRequest);
-    const outcome = new FetchFailed('Fetch Failed');
+  it('should return FetchFailed action when http request fails', () => {
+    const action = new MovieListActions.FetchMovies(movieRequest);
+    const outcome = new MovieListActions.FetchFailed('Fetch Failed')
+    actions$ = hot('-a', {a: action})
 
-    httpClientSpy.post.and.returnValue(of(new Error('Fetch Failed')));
+    httpClientSpy.post.and.returnValue(cold('-#', {}, {message: 'Fetch Failed'}));
 
-    store.dispatch(action);
-    effects.fetchMovies.subscribe((resultAction) => {
-      expect(resultAction).toEqual(outcome);
-    });
-  });
+    const expected = cold('--b', {b: outcome})
+
+    expect(effects.fetchMovies).toBeObservable(expected)
+
+  })
 });
+
+const movies = [
+  {
+    name: 'The Nice Guys',
+    genre: 'Comedy',
+    year: 2016,
+    director: 'Shane Black',
+    cast: ['Ryan Gosling', 'Russell Crowe', 'Amy Adams'],
+    synopsis:
+      'A hilariously inept but surprisingly endearing duo of 1970s Los Angeles private investigators must navigate a series of bizarre murders and uncover a shocking conspiracy. Prepare for a wild ride as they stumble through a world of shady characters, quirky encounters, and an unexpected twist that will leave you gasping for air. This buddy cop flick is a delightful mix of detective work, witty dialogue, and unexpected turns! Get ready for a laugh riot!',
+    rating: 4.0,
+  },
+  {
+    name: 'Palm Springs',
+    genre: 'Comedy',
+    year: 2020,
+    director: 'Max Barbakow',
+    cast: ['Andy Samberg', 'Cristin Milioti'],
+    synopsis:
+      "Two strangers, stuck in a time loop at a wedding, must navigate the awkward complexities of their repetitive days and unearth a hilarious plot twist that will blow your mind! This quirky romantic comedy takes you on a comedic roller coaster filled with unexpected revelations. Get ready for a laugh-out-loud experience that's both hilarious and heartwarming.",
+    rating: 4.2,
+  },
+  {
+    name: 'Everything Everywhere All at Once',
+    genre: 'Comedy',
+    year: 2022,
+    director: 'Daniel Kwan, Daniel Scheinert',
+    cast: ['Michelle Yeoh', 'Ke Huy Quan', 'Stephanie Hsu'],
+    synopsis:
+      'Prepare to be blown away by this mind-bending comedy!  A stressed-out Chinese American immigrant struggles with family problems and a looming tax audit when her life is turned upside down by a multiverse-hopping adventure. This hilarious and heartwarming movie takes you on an epic journey through countless realities and unexpected twists that will keep you on the edge of your seat. Get ready for a visually stunning and emotionally resonant experience that’s completely unforgettable!',
+    rating: 4.5,
+  },
+];
+
+const movieResponse: MovieCompleteResponse = {
+  candidates: [
+    {
+      content: {
+        parts: [
+          {
+            text: '```json\n[\n  {\n    "name": "The Nice Guys",\n    "genre": "Comedy",\n    "year": 2016,\n    "director": "Shane Black",\n    "cast": [\n      "Ryan Gosling",\n      "Russell Crowe",\n      "Amy Adams"\n    ],\n    "synopsis": "A hilariously inept but surprisingly endearing duo of 1970s Los Angeles private investigators must navigate a series of bizarre murders and uncover a shocking conspiracy. Prepare for a wild ride as they stumble through a world of shady characters, quirky encounters, and an unexpected twist that will leave you gasping for air. This buddy cop flick is a delightful mix of detective work, witty dialogue, and unexpected turns! Get ready for a laugh riot!",\n    "rating": 4.0\n  },\n  {\n    "name": "Palm Springs",\n    "genre": "Comedy",\n    "year": 2020,\n    "director": "Max Barbakow",\n    "cast": [\n      "Andy Samberg",\n      "Cristin Milioti"\n    ],\n    "synopsis": "Two strangers, stuck in a time loop at a wedding, must navigate the awkward complexities of their repetitive days and unearth a hilarious plot twist that will blow your mind! This quirky romantic comedy takes you on a comedic roller coaster filled with unexpected revelations. Get ready for a laugh-out-loud experience that\'s both hilarious and heartwarming.",\n    "rating": 4.2\n  },\n  {\n    "name": "Everything Everywhere All at Once",\n    "genre": "Comedy",\n    "year": 2022,\n    "director": "Daniel Kwan, Daniel Scheinert",\n    "cast": [\n      "Michelle Yeoh",\n      "Ke Huy Quan",\n      "Stephanie Hsu"\n    ],\n    "synopsis": "Prepare to be blown away by this mind-bending comedy!  A stressed-out Chinese American immigrant struggles with family problems and a looming tax audit when her life is turned upside down by a multiverse-hopping adventure. This hilarious and heartwarming movie takes you on an epic journey through countless realities and unexpected twists that will keep you on the edge of your seat. Get ready for a visually stunning and emotionally resonant experience that’s completely unforgettable!",\n    "rating": 4.5\n  }\n]\n```',
+          },
+        ],
+        role: 'model',
+      },
+      finishReason: 'STOP',
+      index: 0,
+      safetyRatings: [
+        {
+          category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+          probability: 'NEGLIGIBLE',
+        },
+        {
+          category: 'HARM_CATEGORY_HATE_SPEECH',
+          probability: 'NEGLIGIBLE',
+        },
+        {
+          category: 'HARM_CATEGORY_HARASSMENT',
+          probability: 'NEGLIGIBLE',
+        },
+        {
+          category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+          probability: 'NEGLIGIBLE',
+        },
+      ],
+    },
+  ],
+  usageMetadata: {
+    promptTokenCount: 162,
+    candidatesTokenCount: 517,
+    totalTokenCount: 679,
+  },
+  modelVersion: 'gemini-1.5-flash-8b-exp-0827',
+};
