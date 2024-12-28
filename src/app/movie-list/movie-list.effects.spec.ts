@@ -1,19 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppModule } from '../app.module';
 import { MovieListEffects } from './movie-list.effects';
 import { MovieCompleteResponse, MovieRequestData } from './movie-requests.type';
 
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import * as MovieListActions from './store/movie-list.actions'
 describe('MovieListEffects', () => {
   let actions$ = new Observable<Action>();
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let effects: MovieListEffects;
-  const initialState = { loading: false, movies: [], error: null };
   const movieRequest: MovieRequestData = {
     characteristic: 'has a plot twist',
     genre: 'horror',
