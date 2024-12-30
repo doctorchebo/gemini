@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import * as fromApp from '../store/app.reducer';
 import { Movie } from './movie.model';
-import * as MovieListActions from "./store/movie-list.actions"
 @Component({
     selector: 'app-movie-list',
     templateUrl: './movie-list.component.html',
@@ -19,7 +18,6 @@ export class MovieListComponent implements OnInit, OnDestroy {
   loading = false;
   ngOnInit() {
     this.moviesSub = this.store.select('movies').subscribe((moviesState) => {
-      console.log(moviesState);
       this.movies = moviesState.movies;
       this.loading = moviesState.loading;
     });

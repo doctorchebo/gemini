@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import * as MovieListActions from '../movie-list/store/movie-list.actions';
 import * as fromApp from '../store/app.reducer';
 import { Subscription } from 'rxjs';
+import { MovieListService } from '../movie-list/movie-list.service';
 
 @Component({
     selector: 'app-search-form',
@@ -12,7 +13,7 @@ import { Subscription } from 'rxjs';
     standalone: false
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
-  constructor(public store: Store<fromApp.AppState>) {}
+  constructor(public store: Store<fromApp.AppState>, private movieListService: MovieListService) {}
   movieForm!: FormGroup;
   loading = false;
   moviesSub!: Subscription;
@@ -60,7 +61,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   quantity = 3;
 
   onSubmit() {
-    console.log(this.movieForm.value);
+    this.movieListService.searchMovies();
     this.store.dispatch(new MovieListActions.FetchMovies(this.movieForm.value));
   }
 

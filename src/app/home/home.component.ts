@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
   quantity = 3;
 
   onSubmit() {
-    console.log(this.movieForm.value);
     this.store.dispatch(new MovieListActions.FetchMovies(this.movieForm.value));
   }
 }

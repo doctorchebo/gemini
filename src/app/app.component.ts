@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import * as fromApp from './store/app.reducer';
+import { MovieListService } from './movie-list/movie-list.service';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -9,18 +10,21 @@ import * as fromApp from './store/app.reducer';
     standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private store: Store<fromApp.AppState>) {}
+  constructor(private store: Store<fromApp.AppState>,private movieListService: MovieListService) {}
   movieSub!: Subscription;
   rows = 6;
   ngOnInit() {
     this.movieSub = this.store.select('movies').subscribe((movieState) => {
-      this.rows =
-        movieState.movies.length == 0
-          ? this.rows
-          : movieState.movies.length * 4 + 1;
-
-      // this.rows = 5 * 4 + 1;
+      if(movieState.movies.length > 0) {
+        this.rows = movieState.movies.length * 4 + 1
+      }
     });
+
+    this.movieListService.searched.subscribe(searched=> {
+      if(searched){
+        this.rows = 6;
+      }
+    })
   }
 
   ngOnDestroy() {

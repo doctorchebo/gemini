@@ -20,6 +20,7 @@ export function movieListReducer(
       return {
         ...state,
         loading: true,
+        movies: []
       };
     case MovieListActions.SET_MOVIES:
       return {
