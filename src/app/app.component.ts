@@ -17,7 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.rows =
         movieState.movies.length == 0
           ? this.rows
-          : movieState.movies.length * 5 + 1;
+          : movieState.movies.length * 4 + 1;
 
       // this.rows = 5 * 4 + 1;
     });
