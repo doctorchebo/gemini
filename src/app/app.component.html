@@ -1,11 +1,16 @@
 <app-header></app-header>
 <div class="container">
-  <mat-grid-list cols="8" rowHeight="5.2rem">
-    <mat-grid-tile [rowspan]="9" [colspan]="2"
+  <mat-grid-list cols="8" rowHeight="5.2rem" *ngIf="!isMobileView">
+    <mat-grid-tile [rowspan]="10" [colspan]="2"
       ><app-home></app-home
     ></mat-grid-tile>
     <mat-grid-tile [rowspan]="rows" [colspan]="6"
       ><app-movie-list></app-movie-list
     ></mat-grid-tile>
   </mat-grid-list>
+
+  <div *ngIf="isMobileView">
+    <app-home></app-home>
+    <app-movie-list></app-movie-list>
+  </div>
 </div>

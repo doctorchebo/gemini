@@ -12,8 +12,7 @@ import { Movie } from './movie.model';
 export class MovieListComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromApp.AppState>) {}
   moviesSub!: Subscription;
-  movies: Movie[] = [
-  ];
+  movies: Movie[] = [];
 
   loading = false;
   ngOnInit() {

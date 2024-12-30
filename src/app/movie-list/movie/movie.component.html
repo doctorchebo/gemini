@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-card class="card" appearance="outlined">
+  <mat-card [ngClass]="smallWindowSize ? 'card-sm' : 'card'" appearance="outlined">
     <mat-card-header>
       <mat-card-title>{{ movie?.name }} - {{ movie?.year }}</mat-card-title>
       <mat-card-subtitle>{{ movie?.genre }}</mat-card-subtitle>

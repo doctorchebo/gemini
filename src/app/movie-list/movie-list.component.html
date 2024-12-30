@@ -1,4 +1,4 @@
 <div *ngFor="let movie of movies; let i = index">
   <app-movie [movie]="movie" *ngIf="!loading"></app-movie>
 </div>
-<mat-spinner class="loading-spinner" *ngIf="loading"></mat-spinner>
+<div *ngIf="loading" class="spinner-container"><mat-spinner class="loading-spinner"></mat-spinner></div>

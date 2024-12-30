@@ -12,5 +12,10 @@ p {
 }
 
 .card {
-  height:21rem;
+  min-height:21rem;
+}
+
+.card-sm {
+  min-height:27rem;
+  overflow-y: scroll;
 }
